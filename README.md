@@ -117,78 +117,63 @@ This will fetch and create all images required for the build process. The whole 
 
 ## Configuration Settings
 ### period
-
-    Defines the interval at which the SQL query is executed.
-    Example: 600s
+Defines the interval at which the SQL query is executed.  
+Example: 600s
 
 ### threads
-
-    Description: Specifies the number of threads used for data collection.
-    Example: 2
+Specifies the number of threads used for data collection.  
+Example: 2
 
 ### inputs
-
-    Description: Defines the input settings for data collection. Multiple inputs can be configured.
+Defines the input settings for data collection. Multiple inputs can be configured.
 
 ### field
-
-    Specifies the field name for the input.
-    Example: "sql1"
+Specifies the field name for the input.  
+Example: "sql1"
 
 ### enabled
-
-    Indicates whether the input is enabled.
-    Example: true
+Indicates whether the input is enabled.  
+Example: true
 
 ### mssqlserver_host
-
-    Specifies the hostname of the SQL Server to connect to.
-    Example: "servername.database.windows.net"
+Specifies the hostname of the SQL Server to connect to.  
+Example: "servername.database.windows.net"
 
 ### mssqlserver_port
-
-    Specifies the port number of the SQL Server to connect to.
-    Example: "1433"
+Specifies the port number of the SQL Server to connect to.  
+Example: "1433"
 
 ### mssqlserver_userid
-
-    Specifies the user ID for connecting to the SQL Server.
-    Example: "userid"
+Specifies the user ID for connecting to the SQL Server.  
+Example: "userid"
 
 ### mssqlserver_password
-
-    Specifies the password for connecting to the SQL Server.
-    Example: "password"
+Specifies the password for connecting to the SQL Server.  
+Example: "password"
 
 ### mssqlserver_database
-
-    Specifies the name of the database to connect to.
-    Example: "db"
+Specifies the name of the database to connect to.  
+Example: "db"
 
 ### mssqlserver_tlsmin
-
-    Description: Specifies the minimum TLS version to use.
-    Example: "1.2"
+Description: Specifies the minimum TLS version to use.  
+Example: "1.2"
 
 ### sql_query
-
-    Specifies the SQL query to execute. The @LastTime placeholder will be replaced with the latest date.
-    Example: "SELECT * FROM TimeCount WHERE CurrentTime > @LastTime"
+Specifies the SQL query to execute. The @LastTime placeholder will be replaced with the latest date.
+Example: "SELECT * FROM TimeCount WHERE CurrentTime > @LastTime"
 
 ### sql_time_column
-
-    Specifies the column name used for time-based filtering.
-    Example: "CurrentTime"
+Specifies the column name used for time-based filtering.
+Example: "CurrentTime"
 
 ### sql_time_initialize_with_current_time
-
-    Indicates whether to initialize with the current time.
-    Example: false
+Indicates whether to initialize with the current time.
+Example: false
 
 ### field_prefix
-
-    Specifies the prefix for field names when sending data to the Elastic Stack. This prefix is added to the column names from the SQL Server to create the field names.
-    Example: "SQL1_"
+Specifies the prefix for field names when sending data to the Elastic Stack. This prefix is added to the column names from the SQL Server to create the field names.
+Example: "SQL1_"
 
 ## Example Configuration File
 
