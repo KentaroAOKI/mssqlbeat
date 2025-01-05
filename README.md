@@ -11,23 +11,6 @@ Ensure that this folder is at the following location:
 
 * [Golang](https://golang.org/dl/) 1.7
 
-### Init Project
-To get running with Mssqlbeat and also install the
-dependencies, run the following command:
-
-```
-make setup
-```
-
-It will create a clean git history for each major step. Note that you can always rewrite the history if you wish before pushing your changes.
-
-To push Mssqlbeat in the git repository, run the following commands:
-
-```
-git remote set-url origin https://github.com/KentaroAOKI/mssqlbeat
-git push origin master
-```
-
 For further development, check out the [beat developer guide](https://www.elastic.co/guide/en/beats/libbeat/current/new-beat.html).
 
 ### Build
