@@ -1,2 +1,56 @@
+# === Inputs ===
+
+## --- Mssqlbeat Inputs ---
 mssqlbeat:
-  period: 1s
+  # Defines how often an event is sent to the output
+  period: 10s
+  threads: 2
+  inputs:
+    - field: "sql1"
+      enabled: true
+      mssqlserver_host: "<server_name>.database.windows.net"
+      mssqlserver_port: "1433"
+      mssqlserver_userid: "<user_id>"
+      mssqlserver_password: "<password>"
+      mssqlserver_database: "<database_name>"
+      mssqlserver_tlsmin: "1.2
+      sql_query: "SELECT * FROM TimeCount WHERE CurrentTime > @LastTime"
+      sql_time_column: "CurrentTime"
+      sql_time_initialize_with_current_time: true 
+      field_prefix: "SQL1_"
+    - field: "sql2"
+      enabled: true
+      mssqlserver_host: "<server_name>.database.windows.net"
+      mssqlserver_port: "1433"
+      mssqlserver_userid: "<user_id>"
+      mssqlserver_password: "<password>"
+      mssqlserver_database: "<database_name>"
+      mssqlserver_tlsmin: "1.2
+      sql_query: "SELECT * FROM TimeCount WHERE CurrentTime > @LastTime"
+      sql_time_column: "CurrentTime"
+      sql_time_initialize_with_current_time: true 
+      field_prefix: "SQL2_"
+
+# === Outputs ===
+
+## --- Elasticsearch Output ---
+output.elasticsearch:
+  hosts: ["localhost:9200"]
+
+  preset: balanced
+
+  #protocol: "https"
+
+  #api_key: "id:api_key"
+  #username: "elastic"
+  #password: "changeme"
+
+## --- Logstash Output ---
+#output.logstash:
+  #hosts: ["localhost:5044"]
+
+  #ssl.certificate_authorities: ["/etc/pki/root/ca.pem"]
+
+  #ssl.certificate: "/etc/pki/client/cert.pem"
+
+  #ssl.key: "/etc/pki/client/cert.key"

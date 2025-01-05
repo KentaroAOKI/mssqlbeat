@@ -1,5 +1,5 @@
-= {Beat} Docs
+= Mssqlbeat Docs
 
-Welcome to the {Beat} documentation.
+Welcome to the Mssqlbeat documentation.
 
 

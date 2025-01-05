@@ -2,6 +2,7 @@ package beater
 
 import (
 	"fmt"
+	"sync"
 	"time"
 
 	"github.com/elastic/beats/v7/libbeat/beat"
@@ -16,13 +17,14 @@ type mssqlbeat struct {
 	done   chan struct{}
 	config config.Config
 	client beat.Client
+	mu     sync.Mutex
 }
 
 // New creates an instance of mssqlbeat.
 func New(b *beat.Beat, cfg *common.Config) (beat.Beater, error) {
 	c := config.DefaultConfig
 	if err := cfg.Unpack(&c); err != nil {
-		return nil, fmt.Errorf("Error reading config file: %v", err)
+		return nil, fmt.Errorf("error reading config file: %v", err)
 	}
 
 	bt := &mssqlbeat{
@@ -36,6 +38,7 @@ func New(b *beat.Beat, cfg *common.Config) (beat.Beater, error) {
 func (bt *mssqlbeat) Run(b *beat.Beat) error {
 	logp.Info("mssqlbeat is running! Hit CTRL-C to stop it.")
 
+	var wg sync.WaitGroup
 	var err error
 	bt.client, err = b.Publisher.Connect()
 	if err != nil {
@@ -43,7 +46,6 @@ func (bt *mssqlbeat) Run(b *beat.Beat) error {
 	}
 
 	ticker := time.NewTicker(bt.config.Period)
-	counter := 1
 	for {
 		select {
 		case <-bt.done:
@@ -51,16 +53,21 @@ func (bt *mssqlbeat) Run(b *beat.Beat) error {
 		case <-ticker.C:
 		}
 
-		event := beat.Event{
-			Timestamp: time.Now(),
-			Fields: common.MapStr{
-				"type":    b.Info.Name,
-				"counter": counter,
-			},
+		// Create enabled input array.
+		enabled_inputs := enabledArray(bt.config.Inputs)
+
+		// Create input array according to number of threads.
+		scheduled_inputs := chunkArray(enabled_inputs, bt.config.Threads)
+
+		// Execute a query on the SQL server and publish the output data.
+		for _, inputs := range scheduled_inputs {
+			for thread_no, input := range inputs {
+				wg.Add(1)
+				go bt.PublishMssqlData(b, &input, thread_no)
+				wg.Done()
+			}
+			wg.Wait()
 		}
-		bt.client.Publish(event)
-		logp.Info("Event sent")
-		counter++
 	}
 }
 
