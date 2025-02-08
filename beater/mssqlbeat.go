@@ -63,8 +63,10 @@ func (bt *mssqlbeat) Run(b *beat.Beat) error {
 		for _, inputs := range scheduled_inputs {
 			for thread_no, input := range inputs {
 				wg.Add(1)
-				go bt.PublishMssqlData(b, &input, thread_no)
-				wg.Done()
+				go func(thread_no int, input *config.Input) {
+					bt.PublishMssqlData(b, input, thread_no)
+					wg.Done()
+				}(thread_no, &input)
 			}
 			wg.Wait()
 		}

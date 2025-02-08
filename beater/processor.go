@@ -91,7 +91,7 @@ func (bt *mssqlbeat) PublishMssqlData(b *beat.Beat, input *config.Input, thread_
 		for i, col := range columns {
 			result[col] = values[i]
 			// Get time for the sql_time_column.
-			if col == input.SqlTimeColumn {
+			if !hasCurrentTime && col == input.SqlTimeColumn {
 				var ok bool
 				currentTime, ok = values[i].(time.Time)
 				hasCurrentTime = ok || hasCurrentTime
